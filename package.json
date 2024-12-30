@@ -1,0 +1,30 @@
+{
+  "name": "wagents",
+  "version": "0.0.1",
+  "description": "An on-chain AI agent kit that simplifies interactions with Whitechain.",
+  "author": "nonomnouns",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js",
+    "./model": "./dist/models/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "bun test"
+  },
+  "keywords": ["AI", "Whitechain", "on-chain", "agent", "SDK", "token transactions", "blockchain", "artificial intelligence", "machine learning", "smart contracts"],
+  "dependencies": {
+    "@ai-sdk/google": "^1.0.12",
+    "@ai-sdk/groq": "^1.0.9",
+    "@ai-sdk/mistral": "^1.0.6",
+    "@ai-sdk/openai": "^1.0.11",
+    "ai": "^4.0.22",
+    "viem": "^2.21.59",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  }
+}
