@@ -1,6 +1,7 @@
-import { createWalletClient, createPublicClient, http, defineChain } from 'viem';
+import { createWalletClient, createPublicClient, http, defineChain, WalletClient } from 'viem';
 import { privateKeyToAccount } from 'viem/accounts';
-import {mainnet} from 'viem/chains'
+import { mainnet } from 'viem/chains';
+
 // Define Whitechain and Whitechain Testnet
 export const whitechain = defineChain({
     id: 1875,
@@ -27,7 +28,7 @@ export const whitechainTest = defineChain({
 });
 
 // Create a wallet client
-export function createWallet(chain: 'mainnet' | 'testnet', privateKey: `0x${string}`) {
+export function createWallet(chain: 'mainnet' | 'testnet', privateKey: `0x${string}`): WalletClient {
     const selectedChain = chain === 'mainnet' ? whitechain : whitechainTest;
     const account = privateKeyToAccount(privateKey);
 
@@ -79,21 +80,17 @@ export const erc20Abi = [
     },
 ] as const;
 
-
-
 export const whiteClient = createPublicClient({ 
   chain: whitechain,
   transport: http()
-})
+});
 
 export const whiteClientTest = createPublicClient({ 
   chain: whitechainTest,
   transport: http()
-})
-
+});
 
 export const ethClient = createPublicClient({ 
     chain: mainnet,
     transport: http('https://eth.llamarpc.com')
-  })
-
+});

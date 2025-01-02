@@ -43,6 +43,14 @@ export function createSendNativeTokenTool(chain: 'mainnet' | 'testnet', privateK
                     };
                 }
 
+                // Pastikan walletClient.account tidak undefined
+                if (!walletClient.account) {
+                    return {
+                        status: 'error',
+                        error: 'Wallet account is undefined. Please check your wallet configuration.',
+                    };
+                }
+
                 // Dynamically calculate gas limit
                 let gasEstimate: bigint;
                 try {
@@ -66,6 +74,7 @@ export function createSendNativeTokenTool(chain: 'mainnet' | 'testnet', privateK
                         value: valueInWei,
                         chain: chain === 'mainnet' ? whitechain : whitechainTest,
                         gas: gasEstimate,
+                        account: walletClient.account, // Tambahkan parameter account
                     });
                 } catch (error) {
                     return {

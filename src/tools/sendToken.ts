@@ -1,6 +1,5 @@
-import { createWallet, createPublic, erc20Abi } from '../clients/walletClient';
+import { createWallet, createPublic, erc20Abi, whitechain, whitechainTest } from '../clients/walletClient';
 import { z } from 'zod';
-import { isAddress } from 'viem'; // Untuk validasi alamat
 
 // Function to convert token amount to the smallest unit (e.g., 1 USDT = 10^6 units)
 function tokenToUnits(amount: string, decimals: number): bigint {
@@ -59,7 +58,7 @@ export function createSendTokenTool(chain: 'mainnet' | 'testnet', privateKey: `0
                         address,
                         abi: erc20Abi,
                         functionName: 'balanceOf',
-                        args: [walletClient.account.address],
+                        args: [walletClient.account!.address], // Use non-null assertion
                     }) as bigint;
                 } catch (error) {
                     return {
@@ -76,6 +75,14 @@ export function createSendTokenTool(chain: 'mainnet' | 'testnet', privateKey: `0
                     };
                 }
 
+                // Pastikan walletClient.account tidak undefined
+                if (!walletClient.account) {
+                    return {
+                        status: 'error',
+                        error: 'Wallet account is undefined. Please check your wallet configuration.',
+                    };
+                }
+
                 // Send the token
                 console.log('Sending token...');
                 let txHash: `0x${string}`;
@@ -85,6 +92,8 @@ export function createSendTokenTool(chain: 'mainnet' | 'testnet', privateKey: `0
                         abi: erc20Abi,
                         functionName: 'transfer',
                         args: [to, valueInUnits],
+                        account: walletClient.account, // Gunakan walletClient.account yang sudah divalidasi
+                        chain: chain === 'mainnet' ? whitechain : whitechainTest, // Tambahkan parameter chain
                     });
                 } catch (error) {
                     return {
